@@ -12,12 +12,12 @@ private:
 	T value;				// Ёлемент
 	CNode* left, * right;	// ”казатели на лево и право в дереве
 public:
+	CNode();
 	CNode(T val, CNode* l, CNode* r);		//  онструктор с параметрами
 
 	CNode* InputData(std::string val);		// –азбор строки на звень€
-	CNode* InputData(int* val);
-	CNode* InputData(double* val);
-	CNode* InputData(bool* val);
+	CNode* InputData(int val[], int size);
+	CNode* InputData(double val[], int size);
 
 	CNode* addNode(CNode* tree, T val);		// ƒобавление звена
 
@@ -36,6 +36,14 @@ public:
 };
 
 template<typename T>
+inline CNode<T>::CNode()
+{
+	left = nullptr;
+	right = nullptr;
+	count = 0;
+}
+
+template<typename T>
 inline CNode<T>::CNode(T val, CNode* l, CNode* r)
 {
 	value = val;
@@ -47,44 +55,81 @@ inline CNode<T>::CNode(T val, CNode* l, CNode* r)
 template<typename T>
 inline CNode<T>* CNode<T>::InputData(std::string in)
 {
-	char slovar[SizeSlovar] = { ',', '.', '?', '!', ':', '(', ')', ';', '{', '}', '1','2','3','4','5','6','7','8','9','0' };
-
-	int count = 0;
-	int countNum = 0;
-	std::string res[100];
-
-	bool IsGood = true;
-	for (int i = 0; i < in.size(); i++)
+	if (in.size() > 0)
 	{
-		IsGood = true;
-		if (in[i] == ' ') { count++; continue; }
-		for (int j = 0; j < SizeSlovar; j++)
+		// Ёлементы которые не должны попасть в исходный текст
+		char slovar[SizeSlovar] = { ',', '.', '?', '!', ':', '(', ')', ';', '{', '}', '1','2','3','4','5','6','7','8','9','0' };
+
+		int count = 0;
+		int countNum = 0;
+		std::string res[100];
+
+		bool IsGood = true;
+		for (unsigned int i = 0; i < in.size(); i++)
 		{
-			if (in[i] == slovar[j])
+			IsGood = true;
+			if (in[i] == ' ') { count++; continue; }
+			for (int j = 0; j < SizeSlovar; j++)
 			{
-				if (j > 10 && countNum < 1) { count--; countNum++; }
-				IsGood = false;
-				break;
+				if (in[i] == slovar[j])
+				{
+					if (j > 10 && countNum < 1) { count--; countNum++; }
+					IsGood = false;
+					break;
+				}
+			}
+			if (IsGood)
+			{
+				countNum = 0;
+				res[count] += in[i];
 			}
 		}
-		if (IsGood)
+
+		CNode<std::string> tmp(res[0], nullptr, nullptr);
+		for (int i = 1; i < count + 1; i++)
 		{
-			countNum = 0;
-			res[count] += in[i];
+			tmp.addNode(&tmp, res[i]);
 		}
-	}
 
-	CNode<std::string> c(res[0], nullptr, nullptr);
-	for (int i = 1; i < count + 1; i++)
+		*this = tmp;
+
+		return &tmp;
+	}
+	return this;
+}
+
+template<typename T>
+inline CNode<T>* CNode<T>::InputData(int val[], int size)
+{
+	if (size > 0)
 	{
-		c.addNode(&c, res[i]);
+		CNode<int> res(val[0], nullptr, nullptr);
+		for (int i = 1; i < size; i++)
+		{
+			res.addNode(&res, val[i]);
+		}
+		*this = res;
+
+		return &res;
 	}
-	c.PrintTree(&c);
+	return this;
+}
 
-	*this = c;
+template<typename T>
+inline CNode<T>* CNode<T>::InputData(double val[], int size)
+{
+	if (size > 0)
+	{
+		CNode<double> res(val[0], nullptr, nullptr);
+		for (int i = 1; i < size; i++)
+		{
+			res.addNode(&res, val[i]);
+		}
+		*this = res;
 
-	return &c;
-	
+		return &res;
+	}
+	return this;
 }
 
 template<typename T>
