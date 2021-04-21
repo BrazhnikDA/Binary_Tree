@@ -19,6 +19,8 @@ public:
 	CNode* min(CNode* tree);						// Поиск минимума 
 	CNode* max(CNode* tree);						// Поиск максимума
 
+	CNode* find(CNode* start, std::string findVal, int* count);	// Поиск элемента в дереве
+
 	bool isBinaryTree(CNode* tree);					// Проверка является ли это дерево бинарным 
 	bool check(CNode* node, int min, int max);
 
@@ -85,6 +87,10 @@ inline CNode* CNode::min(CNode* tree)
 	std::string res;
 	if (tree != nullptr)
 	{
+		if (tree->left == nullptr)
+		{
+			res = tree->value;
+		}
 		while (tree->left != nullptr)
 		{
 			res = tree->value;
@@ -100,14 +106,33 @@ inline CNode* CNode::max(CNode* tree)
 	std::string res;
 	if (tree != nullptr)
 	{
-		while (tree->right != nullptr)
+		if (tree->right == nullptr)
 		{
 			res = tree->value;
+		}
+		while (tree->right != nullptr)
+		{
 			tree = tree->right;
+			res = tree->value;
 		}
 	}
 	std::cout << "MAX: " << res << "\n";
 	return tree;
+}
+
+inline CNode* CNode::find(CNode* start, std::string findVal, int* count)
+{
+	if (start != nullptr)
+	{
+		if (findVal == start->value) 
+		{ 
+			*count = (*count) + start->count;
+			std::cout << "Slovo: '" << findVal << "' Find: " << *count << " raz" << "\n"; 
+		}
+		find(start->right, findVal, count);
+		find(start->left, findVal, count);
+	}
+	return start; 
 }
 
 inline bool CNode::isBinaryTree(CNode* tree)

@@ -8,7 +8,7 @@ int main()
 	setlocale(LC_ALL, "Rus");
 	
 	char slovar[SizeSlovar] = { ',', '.', '?', '!', ':', '(', ')', ';', '{', '}', '1','2','3','4','5','6','7','8','9','0' };
-	std::string in = "шло 20 апреля. я всё ещё не знал программирование";
+	std::string in = "шло 20 апреля. абоба всё ещё не знал программирование. шло ава, не, ура, не, шло";
 
 	int count = 0;
 	int countNum = 0;
@@ -36,7 +36,7 @@ int main()
 	}
 
 	CNode c(res[0], nullptr, nullptr);
-	for (int i = 1; i < 9; i++)
+	for (int i = 1; i < count + 1; i++)
 	{
 		c.addNode(&c, res[i]);
 	}
@@ -47,7 +47,9 @@ int main()
 	c.min(&c);
 	c.max(&c);
 
-	c.deleteSubTree(&c);
+	int count_ = 0;
+
+	c.find(&c, "всё", &count_);
 
 	system("pause");
 	return 0;
