@@ -2,30 +2,37 @@
 #include <string>
 #include <iostream>
 
+#define SizeSlovar 20
+
 template<typename T>
 class CNode
 {
 private:
 	int count;				// Сколько раз встречается данное значение
-	T value;		// Элемент
+	T value;				// Элемент
 	CNode* left, * right;	// Указатели на лево и право в дереве
 public:
 	CNode(T val, CNode* l, CNode* r);		// Конструктор с параметрами
 
-	CNode* addNode(CNode* tree, T val);	// Добавление звена
+	CNode* InputData(std::string val);		// Разбор строки на звенья
+	CNode* InputData(int* val);
+	CNode* InputData(double* val);
+	CNode* InputData(bool* val);
+
+	CNode* addNode(CNode* tree, T val);		// Добавление звена
 
 	void deleteNode(CNode* tree, T node);	// Удаление звена
-	void deleteSubTree(CNode* subTreee);			// Удаление ветки
+	void deleteSubTree(CNode* subTreee);	// Удаление ветки
 
-	CNode* min(CNode* tree);						// Поиск минимума 
-	CNode* max(CNode* tree);						// Поиск максимума
+	CNode* min(CNode* tree);				// Поиск минимума 
+	CNode* max(CNode* tree);				// Поиск максимума
 
 	CNode* find(CNode* start, T findVal, int* count);	// Поиск элемента в дереве
 
-	bool isBinaryTree(CNode* tree);					// Проверка является ли это дерево бинарным 
-	bool check(CNode* node, int min, int max);
+	bool isBinaryTree(CNode* tree);						// Проверка является ли это дерево бинарным 
+	bool check(CNode* node, int min, int max);			// Реализация проверки
 
-	void PrintTree(CNode* root);					// Вывести дерево в консоль с слева на право 
+	void PrintTree(CNode* root);						// Вывести дерево в консоль с слева на право 
 };
 
 template<typename T>
@@ -35,6 +42,49 @@ inline CNode<T>::CNode(T val, CNode* l, CNode* r)
 	left = l;
 	right = r;
 	count = 1;
+}
+
+template<typename T>
+inline CNode<T>* CNode<T>::InputData(std::string in)
+{
+	char slovar[SizeSlovar] = { ',', '.', '?', '!', ':', '(', ')', ';', '{', '}', '1','2','3','4','5','6','7','8','9','0' };
+
+	int count = 0;
+	int countNum = 0;
+	std::string res[100];
+
+	bool IsGood = true;
+	for (int i = 0; i < in.size(); i++)
+	{
+		IsGood = true;
+		if (in[i] == ' ') { count++; continue; }
+		for (int j = 0; j < SizeSlovar; j++)
+		{
+			if (in[i] == slovar[j])
+			{
+				if (j > 10 && countNum < 1) { count--; countNum++; }
+				IsGood = false;
+				break;
+			}
+		}
+		if (IsGood)
+		{
+			countNum = 0;
+			res[count] += in[i];
+		}
+	}
+
+	CNode<std::string> c(res[0], nullptr, nullptr);
+	for (int i = 1; i < count + 1; i++)
+	{
+		c.addNode(&c, res[i]);
+	}
+	c.PrintTree(&c);
+
+	*this = c;
+
+	return &c;
+	
 }
 
 template<typename T>
@@ -189,7 +239,8 @@ inline CNode<T>* CNode<T>::find(CNode<T>* start, T findVal, int* count)
 		if (findVal == start->value) 
 		{ 
 			*count = (*count) + start->count;
-			std::cout << "Slovo: '" << findVal << "' Find: " << *count << " raz" << "\n"; 
+			std::cout << "Slovo: '" << findVal << "' Find: " << *count << " raz" << "\n";
+			return start;
 		}
 		find(start->right, findVal, count);
 		find(start->left, findVal, count);
