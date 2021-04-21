@@ -13,8 +13,8 @@ public:
 
 	CNode* addNode(CNode* tree, std::string val);	// Добавление звена
 
-	CNode* deleteNode(CNode* tree, CNode* node);	// Удаление звена
-	void   deleteSubTree(CNode* subTreee);			// Удаление ветки
+	void deleteNode(CNode* tree, std::string node);	// Удаление звена
+	void deleteSubTree(CNode* subTreee);			// Удаление ветки
 
 	CNode* min(CNode* tree);						// Поиск минимума 
 	CNode* max(CNode* tree);						// Поиск максимума
@@ -67,9 +67,63 @@ inline CNode* CNode::addNode(CNode* tree, std::string val)
 	return tree;
 }
 
-inline CNode* CNode::deleteNode(CNode* tree, CNode* node)
+inline void CNode::deleteNode(CNode* tree, std::string node)
 {
-	return NULL;
+	CNode* tmp;
+	if (tree != nullptr)
+	{
+		if (tree->value > node)
+		{
+			while (tree->left != nullptr)
+			{
+				tmp = tree;
+				tree = tree->left;
+				if (tree->value == node)
+				{
+					tree = tmp;
+					delete tree->left;
+					if (tree->left->left != nullptr)
+					{
+						tree->left = tree->left->left;
+						return;
+					}
+					else
+					{
+						// Если удалили последний элемент в дереве
+						tree->left = nullptr;
+						return;
+					}
+				}
+			}
+		}
+		else
+		{
+			if (tree->value < node)
+			{
+				while (tree->right != nullptr)
+				{
+					tmp = tree;
+					tree = tree->right;
+					if (tree->value == node)
+					{
+						tree = tmp;
+						delete tree->right;
+						if (tree->right->right != nullptr)
+						{
+							tree->right = tree->right->right;
+							return;
+						}
+						else
+						{
+							// Если удалили последний элемент в дереве
+							tree->right = nullptr;
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 inline void CNode::deleteSubTree(CNode* start)
