@@ -82,7 +82,7 @@ inline void CNode::deleteNode(CNode* tree, std::string node)
 				{
 					tree = tmp;
 					delete tree->left;
-					if (tree->left->left != nullptr)
+					if (tree->left->left == nullptr)
 					{
 						tree->left = tree->left->left;
 						return;
@@ -147,8 +147,8 @@ inline CNode* CNode::min(CNode* tree)
 		}
 		while (tree->left != nullptr)
 		{
-			res = tree->value;
 			tree = tree->left;
+			res = tree->value;
 		}
 	}
 	std::cout << "MIN: " << res << "\n";
