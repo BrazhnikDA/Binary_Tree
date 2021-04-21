@@ -2,24 +2,25 @@
 #include <string>
 #include <iostream>
 
+template<typename T>
 class CNode
 {
 private:
 	int count;				// Сколько раз встречается данное значение
-	std::string value;		// Элемент
+	T value;		// Элемент
 	CNode* left, * right;	// Указатели на лево и право в дереве
 public:
-	CNode(std::string val, CNode* l, CNode* r);		// Конструктор с параметрами
+	CNode(T val, CNode* l, CNode* r);		// Конструктор с параметрами
 
-	CNode* addNode(CNode* tree, std::string val);	// Добавление звена
+	CNode* addNode(CNode* tree, T val);	// Добавление звена
 
-	void deleteNode(CNode* tree, std::string node);	// Удаление звена
+	void deleteNode(CNode* tree, T node);	// Удаление звена
 	void deleteSubTree(CNode* subTreee);			// Удаление ветки
 
 	CNode* min(CNode* tree);						// Поиск минимума 
 	CNode* max(CNode* tree);						// Поиск максимума
 
-	CNode* find(CNode* start, std::string findVal, int* count);	// Поиск элемента в дереве
+	CNode* find(CNode* start, T findVal, int* count);	// Поиск элемента в дереве
 
 	bool isBinaryTree(CNode* tree);					// Проверка является ли это дерево бинарным 
 	bool check(CNode* node, int min, int max);
@@ -27,7 +28,8 @@ public:
 	void PrintTree(CNode* root);					// Вывести дерево в консоль с слева на право 
 };
 
-inline CNode::CNode(std::string val, CNode* l, CNode* r)
+template<typename T>
+inline CNode<T>::CNode(T val, CNode* l, CNode* r)
 {
 	value = val;
 	left = l;
@@ -35,7 +37,8 @@ inline CNode::CNode(std::string val, CNode* l, CNode* r)
 	count = 1;
 }
 
-inline CNode* CNode::addNode(CNode* tree, std::string val)
+template<typename T>
+inline CNode<T>* CNode<T>::addNode(CNode<T>* tree, T val)
 {
 	if (tree == nullptr)
 	{
@@ -67,9 +70,10 @@ inline CNode* CNode::addNode(CNode* tree, std::string val)
 	return tree;
 }
 
-inline void CNode::deleteNode(CNode* tree, std::string node)
+template<typename T>
+inline void CNode<T>::deleteNode(CNode<T>* tree, T node)
 {
-	CNode* tmp;
+	CNode<T>* tmp;
 	if (tree != nullptr)
 	{
 		if (tree->value > node)
@@ -108,7 +112,7 @@ inline void CNode::deleteNode(CNode* tree, std::string node)
 					{
 						tree = tmp;
 						delete tree->right;
-						if (tree->right->right != nullptr)
+						if (tree->right->right == nullptr)
 						{
 							tree->right = tree->right->right;
 							return;
@@ -126,7 +130,8 @@ inline void CNode::deleteNode(CNode* tree, std::string node)
 	}
 }
 
-inline void CNode::deleteSubTree(CNode* start)
+template<typename T>
+inline void CNode<T>::deleteSubTree(CNode<T>* start)
 {
 	if (start != nullptr)
 	{
@@ -136,9 +141,10 @@ inline void CNode::deleteSubTree(CNode* start)
 	}
 }
 
-inline CNode* CNode::min(CNode* tree)
+template<typename T>
+inline CNode<T>* CNode<T>::min(CNode<T>* tree)
 {
-	std::string res;
+	T res;
 	if (tree != nullptr)
 	{
 		if (tree->left == nullptr)
@@ -155,9 +161,10 @@ inline CNode* CNode::min(CNode* tree)
 	return tree;
 }
 
-inline CNode* CNode::max(CNode* tree)
+template<typename T>
+inline CNode<T>* CNode<T>::max(CNode<T>* tree)
 {
-	std::string res;
+	T res;
 	if (tree != nullptr)
 	{
 		if (tree->right == nullptr)
@@ -174,7 +181,8 @@ inline CNode* CNode::max(CNode* tree)
 	return tree;
 }
 
-inline CNode* CNode::find(CNode* start, std::string findVal, int* count)
+template<typename T>
+inline CNode<T>* CNode<T>::find(CNode<T>* start, T findVal, int* count)
 {
 	if (start != nullptr)
 	{
@@ -189,17 +197,20 @@ inline CNode* CNode::find(CNode* start, std::string findVal, int* count)
 	return start; 
 }
 
-inline bool CNode::isBinaryTree(CNode* tree)
+template<typename T>
+inline bool CNode<T>::isBinaryTree(CNode<T>* tree)
 {
 	return check(tree, 0, 0);
 }
 
-inline bool CNode::check(CNode* node, int min, int max)
+template<typename T>
+inline bool CNode<T>::check(CNode<T>* node, int min, int max)
 {
 	return false;
 }
 
-inline void CNode::PrintTree(CNode* root)
+template<typename T>
+inline void CNode<T>::PrintTree(CNode<T>* root)
 {
 	if (root != nullptr)
 	{

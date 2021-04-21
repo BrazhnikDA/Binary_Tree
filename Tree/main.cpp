@@ -35,7 +35,7 @@ int main()
 		}
 	}
 
-	CNode c(res[0], nullptr, nullptr);
+	CNode<std::string> c(res[0], nullptr, nullptr);
 	for (int i = 1; i < count + 1; i++)
 	{
 		c.addNode(&c, res[i]);
@@ -51,7 +51,7 @@ int main()
 
 	c.find(&c, "якрутой", &count_);
 
-	c.deleteNode(&c, "знал");
+	c.deleteNode(&c, "я");
 
 	c.PrintTree(&c);
 
