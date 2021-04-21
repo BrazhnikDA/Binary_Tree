@@ -5,19 +5,24 @@
 class CNode
 {
 private:
-	int count;
-	std::string value;
-	CNode* left, * right;
+	int count;				// Сколько раз встречается данное значение
+	std::string value;		// Элемент
+	CNode* left, * right;	// Указатели на лево и право в дереве
 public:
-	CNode(std::string val, CNode* l, CNode* r);
-	CNode* addNode(CNode* tree, std::string val);
+	CNode(std::string val, CNode* l, CNode* r);		// Конструктор с параметрами
 
-	CNode* deleteNode(CNode* tree, CNode* node);
+	CNode* addNode(CNode* tree, std::string val);	// Добавление звена
 
-	CNode* min(CNode* tree);
-	CNode* max(CNode* tree);
+	CNode* deleteNode(CNode* tree, CNode* node);	// Удаление звена
+	void   deleteSubTree(CNode* subTreee);			// Удаление ветки
 
-	void PrintTree(CNode* root);
+	CNode* min(CNode* tree);						// Поиск минимума 
+	CNode* max(CNode* tree);						// Поиск максимума
+
+	bool isBinaryTree(CNode* tree);					// Проверка является ли это дерево бинарным 
+	bool check(CNode* node, int min, int max);
+
+	void PrintTree(CNode* root);					// Вывести дерево в консоль с слева на право 
 };
 
 inline CNode::CNode(std::string val, CNode* l, CNode* r)
@@ -40,6 +45,10 @@ inline CNode* CNode::addNode(CNode* tree, std::string val)
 	}
 	else
 	{
+		if (val == tree->value)
+		{
+			tree->count++;
+		}
 		if (tree->value > val)
 		{
 			tree->left = addNode(tree->left, val);
@@ -59,6 +68,16 @@ inline CNode* CNode::addNode(CNode* tree, std::string val)
 inline CNode* CNode::deleteNode(CNode* tree, CNode* node)
 {
 	return NULL;
+}
+
+inline void CNode::deleteSubTree(CNode* start)
+{
+	if (start != nullptr)
+	{
+		deleteSubTree(start->left);
+		deleteSubTree(start->right);
+		delete start;
+	}
 }
 
 inline CNode* CNode::min(CNode* tree)
@@ -89,6 +108,16 @@ inline CNode* CNode::max(CNode* tree)
 	}
 	std::cout << "MAX: " << res << "\n";
 	return tree;
+}
+
+inline bool CNode::isBinaryTree(CNode* tree)
+{
+	return check(tree, 0, 0);
+}
+
+inline bool CNode::check(CNode* node, int min, int max)
+{
+	return false;
 }
 
 inline void CNode::PrintTree(CNode* root)

@@ -47,6 +47,7 @@ int main()
 	c.min(&c);
 	c.max(&c);
 
+	c.deleteSubTree(&c);
 
 	system("pause");
 	return 0;
