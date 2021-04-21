@@ -63,27 +63,31 @@ inline CNode* CNode::deleteNode(CNode* tree, CNode* node)
 
 inline CNode* CNode::min(CNode* tree)
 {
+	std::string res;
 	if (tree != nullptr)
 	{
 		while (tree->left != nullptr)
 		{
+			res = tree->value;
 			tree = tree->left;
 		}
 	}
-	std::cout << "\nMIN: " << tree->value << "\n";
+	std::cout << "MIN: " << res << "\n";
 	return tree;
 }
 
 inline CNode* CNode::max(CNode* tree)
 {
+	std::string res;
 	if (tree != nullptr)
 	{
 		while (tree->right != nullptr)
 		{
+			res = tree->value;
 			tree = tree->right;
 		}
 	}
-	std::cout << "\nMAX: " << tree->value << "\n";
+	std::cout << "MAX: " << res << "\n";
 	return tree;
 }
 

@@ -42,6 +42,8 @@ int main()
 	}
 
 	c.PrintTree(&c);
+	std::cout << std::endl;
+
 	c.min(&c);
 	c.max(&c);
 
